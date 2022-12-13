@@ -1,0 +1,37 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - "*"
+    exclude:
+    - upstream/*
+
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+- checkout: self
+
+- script: make
+  displayName: 'build network measure environment'
+
+- script: docker run --rm net-env python3 -m pytest bwmur/tests
+  displayName: 'Run test'
+
+- script: docker image tag net-env:latest $(dockerRegistry)/net-env:latest
+  displayName: 'Tag network environment image'
+
+- task: Docker@2
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  inputs:
+    containerRegistry: 'opennetlab Azure registry'
+    repository: 'net-env'
+    command: 'push'
+    tags: 'latest'
+  displayName: "Push net-env image"

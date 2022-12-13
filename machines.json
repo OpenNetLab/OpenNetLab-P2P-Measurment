@@ -1,0 +1,18 @@
+{
+    "sender_1" : {
+
+        "host" : "143.248.129.82",
+        "ssh_port" :  "50501",
+        "user" : "msra",
+        "pwd" : "Onl$msra1125"
+    },
+
+   "recv_1" : {
+        "host" : "20.81.187.38",
+        "ssh_port" : "22",
+        "bw_port" : "8000",
+        "user" : "wang",
+        "pwd" : "123456789wang@"
+    }
+
+}
