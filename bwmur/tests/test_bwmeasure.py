@@ -19,6 +19,7 @@ def check_bwc():
     cmdc = "iperf3 -c 127.0.0.1 -t 5"
     #cmd_result = subprocess.Popen(cmdc,shell = True).stdout.read()
     cmd_result = os.popen(cmdc).read()
+    time.sleep(12)
     print(cmd_result)
     assert "Bitrate" in cmd_result
 
