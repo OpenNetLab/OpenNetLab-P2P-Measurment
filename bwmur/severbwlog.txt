@@ -1,20 +1,20 @@
 -----------------------------------------------------------
 Server listening on 8000
 -----------------------------------------------------------
-Accepted connection from 20.81.187.38, port 41768
-[  5] local 10.0.0.5 port 8000 connected to 20.81.187.38 port 41782
+Accepted connection from 20.81.187.38, port 35858
+[  5] local 10.0.0.5 port 8000 connected to 20.81.187.38 port 45386
 [ ID] Interval           Transfer     Bitrate
-[  5]   0.00-1.00   sec  85.1 KBytes   697 Kbits/sec                  
-[  5]   1.00-2.00   sec  2.87 MBytes  24.1 Mbits/sec                  
-[  5]   2.00-3.00   sec  11.3 MBytes  94.5 Mbits/sec                  
-[  5]   3.00-4.00   sec  14.7 MBytes   124 Mbits/sec                  
-[  5]   4.00-5.00   sec  11.5 MBytes  96.6 Mbits/sec                  
-[  5]   5.00-6.00   sec  14.7 MBytes   124 Mbits/sec                  
+[  5]   0.00-1.00   sec  83.7 KBytes   685 Kbits/sec                  
+[  5]   1.00-2.00   sec  2.70 MBytes  22.7 Mbits/sec                  
+[  5]   2.00-3.00   sec  11.6 MBytes  97.0 Mbits/sec                  
+[  5]   3.00-4.00   sec  14.5 MBytes   122 Mbits/sec                  
+[  5]   4.00-5.00   sec  11.7 MBytes  98.5 Mbits/sec                  
+[  5]   5.00-6.00   sec  14.5 MBytes   122 Mbits/sec                  
 [  5]   6.00-7.00   sec  14.5 MBytes   122 Mbits/sec                  
-[  5]   7.00-8.00   sec  11.7 MBytes  98.3 Mbits/sec                  
+[  5]   7.00-8.00   sec  11.7 MBytes  98.5 Mbits/sec                  
 [  5]   8.00-9.00   sec  14.5 MBytes   122 Mbits/sec                  
-[  5]   9.00-10.00  sec  11.8 MBytes  98.6 Mbits/sec                  
-[  5]  10.00-10.22  sec  2.75 MBytes   107 Mbits/sec                  
+[  5]   9.00-10.00  sec  11.7 MBytes  98.5 Mbits/sec                  
+[  5]  10.00-10.22  sec  3.00 MBytes   114 Mbits/sec                  
 - - - - - - - - - - - - - - - - - - - - - - - - -
 [ ID] Interval           Transfer     Bitrate
-[  5]   0.00-10.22  sec   110 MBytes  90.7 Mbits/sec                  receiver
+[  5]   0.00-10.22  sec   111 MBytes  90.8 Mbits/sec                  receiver

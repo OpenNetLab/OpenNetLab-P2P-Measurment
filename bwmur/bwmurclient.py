@@ -12,8 +12,8 @@ import time
 socket_timeout_sec = 240
 machines_file = "machines.json"
 sever_port = "8000"
-sever_ip = "20.81.187.38"
-recv_wd = "/home/wang/testnet/"
+sever_ip = "127.0.0.1"
+recv_wd = "/home"
 
 sever_run_cmd = [
     "iperf3 -s -p %s -i 1 -1" % (
@@ -57,9 +57,6 @@ def get_ssh(name):
         client.connect(hostname=machines[name]["host"], port=machines[name]["ssh_port"], username=machines[name]["user"],
                        password=machines[name]["pwd"])
 
-        #print(machines[name]["host"])
-        #print(machines[name]["ssh_port"])
-        #print(machines[name]["user"])
 
     return client
 
