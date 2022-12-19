@@ -28,7 +28,7 @@ steps:
   displayName: 'Run test'
 
 
-- script: docker image tag net-env:latest $(dockerRegistry)/net-env:latest
+- script: docker image tag net-env:latest opennetlab.azurecr.io/net-env:latest
   displayName: 'Tag network environment image'
 
 - task: Docker@2
