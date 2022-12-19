@@ -27,6 +27,19 @@ steps:
 - script: docker run -v /home:/app -w /app --net=host --name net_evals net-env:latest python3 /home/onl/bwmur/bwmursever.py && docker run -v /home:/app -w /app --net=host --name net_evalc net-env:latest python3 /home/onl/bwmur/bwmurclient.py
   displayName: 'Run test'
 
+- task: GitHubRelease@0
+  inputs:
+    gitHubConnection: 'Pterosaur (1)'
+    repositoryName: '$(Build.Repository.Name)'
+    action: 'create'
+    tagSource: manual
+    tag: $(Build.BuildNumber)
+    title: alphartc
+    assets: '$(System.DefaultWorkingDirectory)/alphartc.tar.gz'
+    changeLogCompareToRelease: 'lastFullRelease'
+    changeLogType: 'commitBased'
+  displayName: "Release target"
+
 - script: docker image tag net-env:latest $(dockerRegistry)/net-env:latest
   displayName: 'Tag network environment image'
 
