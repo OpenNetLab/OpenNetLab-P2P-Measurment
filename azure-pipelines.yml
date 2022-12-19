@@ -21,7 +21,7 @@ steps:
 - script: make
   displayName: 'build network measure environment'
   
-- script: cd /home ; wget https://github.com/OpenNetLab/OpenNetLab-P2P-Measurment/blob/v-wangyif/bwpitch/machines.json
+- script: cd /home ; sudo wget https://github.com/OpenNetLab/OpenNetLab-P2P-Measurment/blob/v-wangyif/bwpitch/machines.json
   displayName: 'make network measure environment'
 
 - script: docker run -v /home:/app -w /app --net=host --name net_eval net-env:latest python3 /home/onl/bwmur/bwmursever.py && docker run -v /home:/app -w /app --net=host --name net_eval net-env:latest python3 /home/onl/bwmur/bwmurclient.py
