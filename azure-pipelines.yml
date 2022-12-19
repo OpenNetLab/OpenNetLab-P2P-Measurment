@@ -34,7 +34,7 @@ steps:
     action: 'create'
     tagSource: manual
     tag: $(Build.BuildNumber)
-    title: alphartc
+    title: net-env
     assets: '$(System.DefaultWorkingDirectory)/alphartc.tar.gz'
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
