@@ -4,6 +4,7 @@ import random
 import json
 import os
 import sys
+import re
 from scp import SCPClient
 import numpy as np
 import copy
@@ -14,6 +15,7 @@ machines_file = "machines.json"
 sever_port = "8000"
 sever_ip = "127.0.0.1"
 recv_wd = "/home"
+tcpbw = 0.0
 
 sever_run_cmd = [
     "iperf3 -s -p %s -i 1 -1" % (
@@ -21,6 +23,10 @@ sever_run_cmd = [
 client_run_cmd = [
     "iperf3 -c %s -p %s" % (
         sever_ip, sever_port)]
+        
+latency_mur_cmd = [
+    "ping -c 4 %s" % (
+    sever_ip)]
 
 def get_datetime():
     now = int(round(time.time() * 1000))
@@ -62,6 +68,7 @@ def get_ssh(name):
 
 def BWmeasure(matches_num):
     #print(get_datetime(), "start measure")
+    global tcpbw
     try:
         output =" "
         get_bw("recv_%d" % (matches_num))
@@ -72,13 +79,51 @@ def BWmeasure(matches_num):
         doc = open('clientbwlog.txt', 'a+')
         doc.seek(0)
         doc.truncate()
+        doc.write(get_datetime())
+        doc.write("\n")
+        doc.write(" ".join(client_run_cmd))
+        doc.write("\n")
         doc.write(status)
         doc.close()
+        #print(status)
+        sta = status.split('\n')
+        #print(sta)
+        for it in sta:
+            #print(it)
+            if it == None:
+                continue
+            pattern = re.compile('[  5].*?receiver')
+            if pattern.search(it) != None :
+                result = pattern.search(it).group()
+                tcpbw = float(result.split()[5])
+                tcpstr = result.split()[6]
+        ltcstatus = os.popen(" ".join(latency_mur_cmd)).read()
+        doc = open('clientbwlog.txt', 'a+')
+        doc.write(get_datetime())
+        doc.write("\n")
+        doc.write(" ".join(latency_mur_cmd))
+        doc.write("\n")
+        doc.write(ltcstatus)
+        for i in range(1,11):
+            print(i)
+            print("iperf3 -u -c %s -b %s -p %s" %(sever_ip, str(round(tcpbw*i*0.1,2))+tcpstr[0], sever_port))
+            doc.write(get_datetime())
+            doc.write("\n")
+            doc.write("iperf3 -u -c %s -b %s -p %s" %(sever_ip, str(round(tcpbw*i*0.1,2))+tcpstr[0], sever_port))
+            doc.write("\n")
+            bw_status = os.popen("iperf3 -u -c %s -b %s -p %s" %(sever_ip, str(tcpbw*i*0.1)+tcpstr[0], sever_port)).read()
+            doc.write(bw_status)
+        doc.close()
+        
+        #status.seek(0)
+        
+        '''
         netctr = get_ssh("netctr")
         print("start scp")
         scp_client = SCPClient(netctr.get_transport(), socket_timeout=30.0)
         scp_client.put("clientbwlog.txt", "%s/." % (recv_wd))
         scp_client.close()
+        '''
 
 
     except Exception as e:

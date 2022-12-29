@@ -66,20 +66,22 @@ def BWmeasure(matches_num):
     try:
         output =" "
         get_bw("recv_%d" % (matches_num))
-        sever_run_cmd = ["iperf3 -s -p %s -i 1 -1" % (sever_port)]
+        sever_run_cmd = ["iperf3 -s -p %s -i 1 " % (sever_port)]
         status = os.popen(" ".join(sever_run_cmd)).read()
         cmd = sever_run_cmd
         doc = open('severbwlog.txt', 'a+')
         doc.seek(0)
         doc.truncate()
         doc.write(status)
+        
         doc.close()
+        '''
         netctr = get_ssh("netctr")
         print("start scp")
         scp_client = SCPClient(netctr.get_transport(), socket_timeout=30.0)
         scp_client.put("severbwlog.txt", "%s/." % (recv_wd))
         scp_client.close()
-
+        '''
 
     except Exception as e:
         print(get_datetime(), "run_measure", e)
