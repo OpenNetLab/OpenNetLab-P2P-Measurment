@@ -75,10 +75,13 @@ def BWmeasure(matches_num):
         doc.write(status)
         doc.close()
         netctr = get_ssh("netctr")
+        '''
+        At present, the method of uploading files through SCP is not adopted.
         print("start scp")
         scp_client = SCPClient(netctr.get_transport(), socket_timeout=30.0)
         scp_client.put("severbwlog.txt", "%s/." % (recv_wd))
         scp_client.close()
+        '''
 
 
     except Exception as e:
