@@ -35,10 +35,6 @@ def get_bw(name):
         machines = json.loads(f.read())
         if name not in machines:
             raise ValueError("Not find such mahcine")
-
-        #print("iperf")
-        #print(machines[name]["host"])
-        #print(machines[name]["bw_port"])
         sever_ip = machines[name]["host"]
         sever_port = machines[name]["bw_port"]
         print(machines[name]["host"])
@@ -61,7 +57,6 @@ def get_ssh(name):
     return client
 
 def BWmeasure(matches_num):
-    #print(get_datetime(), "start measure")
     try:
         output =" "
         get_bw("recv_%d" % (matches_num))
