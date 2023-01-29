@@ -12,7 +12,7 @@ import time
 socket_timeout_sec = 240
 machines_file = "machines.json"
 sever_port = "8000"
-sever_ip = "20.81.187.38"
+sever_ip = "0.0.0.0"
 recv_wd = "/home/wang/testnet/"
 
 sever_run_cmd = [
