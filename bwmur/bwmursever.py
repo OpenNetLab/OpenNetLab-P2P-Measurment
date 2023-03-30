@@ -1,17 +1,14 @@
-import paramiko
 import time
 import random
 import json
 import os
 import sys
-from scp import SCPClient
-import numpy as np
 import copy
 import time
 
 socket_timeout_sec = 240
 machines_file = "machines.json"
-sever_port = "8000"
+sever_port = "8020"
 sever_ip = "20.81.187.38"
 recv_wd = "/home/wang/testnet/"
 
@@ -67,6 +64,7 @@ def BWmeasure(matches_num):
         output =" "
         get_bw("recv_%d" % (matches_num))
         sever_run_cmd = ["iperf3 -s -p %s -i 1 " % (sever_port)]
+        print(" ".join(sever_run_cmd))
         status = os.popen(" ".join(sever_run_cmd)).read()
         cmd = sever_run_cmd
         doc = open('severbwlog.txt', 'a+')

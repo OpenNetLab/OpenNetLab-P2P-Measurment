@@ -1,12 +1,9 @@
-import paramiko
 import time
 import random
 import json
 import os
 import sys
 import re
-from scp import SCPClient
-import numpy as np
 import copy
 import time
 
@@ -73,8 +70,8 @@ def BWmeasure(matches_num):
         output =" "
         get_bw("recv_%d" % (matches_num))
         client_run_cmd = ["iperf3 -c %s -p %s" % (sever_ip, sever_port)]
-        status = os.popen(" ".join(client_run_cmd)).read()
         print(" ".join(client_run_cmd))
+        status = os.popen(" ".join(client_run_cmd)).read()
         cmd = client_run_cmd
         doc = open('clientbwlog.txt', 'a+')
         doc.seek(0)
@@ -88,6 +85,7 @@ def BWmeasure(matches_num):
         #print(status)
         sta = status.split('\n')
         #print(sta)
+        data = {}
         for it in sta:
             #print(it)
             if it == None:
@@ -97,6 +95,11 @@ def BWmeasure(matches_num):
                 result = pattern.search(it).group()
                 tcpbw = float(result.split()[5])
                 tcpstr = result.split()[6]
+                #with open("data.json", "w") as f:
+                data["bandwidth"] = result.split()[5] + result.split()[6]
+                data["time"] = get_datetime()
+                #json_data = json.dumps(data)
+                #f.write(json_data)
         ltcstatus = os.popen(" ".join(latency_mur_cmd)).read()
         doc = open('clientbwlog.txt', 'a+')
         doc.write(get_datetime())
@@ -113,17 +116,24 @@ def BWmeasure(matches_num):
             doc.write("\n")
             bw_status = os.popen("iperf3 -u -c %s -b %s -p %s" %(sever_ip, str(tcpbw*i*0.1)+tcpstr[0], sever_port)).read()
             doc.write(bw_status)
+            bw_ss = bw_status.split()
+            data[str(round(i*0.1,2)) + "_Jitter_Sender" ] = float(bw_ss[155])
+            print(float(bw_ss[158].strip("()%")))
+            data[str(round(i*0.1,2)) + "_Packet-loss-rate_Sender" ] = float(bw_ss[158].strip("()%"))
+            data[str(round(i*0.1,2)) + "_Jitter_Receiver" ] = float(bw_ss[168])
+            data[str(round(i*0.1,2)) + "_Packet-loss-rate_Receiver" ] =  float(bw_ss[171].strip("()%"))
+        with open(machines_file, 'r') as f:
+            machines = json.loads(f.read())
+            data["machines"] = machines
+        with open("data.json", "w") as f:
+            data["bandwidth"] = result.split()[5] + result.split()[6]
+            data["time"] = get_datetime()
+            json_data = json.dumps(data)
+            f.write(json_data)
         doc.close()
         
         #status.seek(0)
         
-        '''
-        netctr = get_ssh("netctr")
-        print("start scp")
-        scp_client = SCPClient(netctr.get_transport(), socket_timeout=30.0)
-        scp_client.put("clientbwlog.txt", "%s/." % (recv_wd))
-        scp_client.close()
-        '''
 
 
     except Exception as e:
