@@ -30,7 +30,6 @@ def get_datetime():
     ret = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(now / 1000))
     return ret
     
-
 def get_bw(name):
     global sever_ip
     global sever_port
@@ -38,17 +37,11 @@ def get_bw(name):
         machines = json.loads(f.read())
         if name not in machines:
             raise ValueError("Not find such mahcine")
-
-        #print("iperf")
-        #print(machines[name]["host"])
-        #print(machines[name]["bw_port"])
         sever_ip = machines[name]["host"]
         sever_port = machines[name]["bw_port"]
         print(machines[name]["host"])
         print(sever_ip)
-        
-
-        
+                
 def get_ssh(name):
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -56,20 +49,19 @@ def get_ssh(name):
         machines = json.loads(f.read())
         if name not in machines:
             raise ValueError("Not find such mahcine")
-
         client.connect(hostname=machines[name]["host"], port=machines[name]["ssh_port"], username=machines[name]["user"],
                        password=machines[name]["pwd"])
-
-
     return client
 
+# Bandwidth measurement program
+# Use Iperf3's TCP mode to measure network bandwidth
+# Using Iperf's UDP mode to measure between 10% and 100%
 def BWmeasure(matches_num):
-    #print(get_datetime(), "start measure")
     global tcpbw
     try:
         output =" "
         get_bw("recv_%d" % (matches_num))
-        client_run_cmd = ["iperf3 -c %s -p %s" % (sever_ip, sever_port)]
+        client_run_cmd = ["iperf3 -c %s -p %s -f M" % (sever_ip, sever_port)]
         print(" ".join(client_run_cmd))
         status = os.popen(" ".join(client_run_cmd)).read()
         cmd = client_run_cmd
@@ -82,12 +74,9 @@ def BWmeasure(matches_num):
         doc.write("\n")
         doc.write(status)
         doc.close()
-        #print(status)
         sta = status.split('\n')
-        #print(sta)
         data = {}
         for it in sta:
-            #print(it)
             if it == None:
                 continue
             pattern = re.compile('[  5].*?receiver')
@@ -95,11 +84,8 @@ def BWmeasure(matches_num):
                 result = pattern.search(it).group()
                 tcpbw = float(result.split()[5])
                 tcpstr = result.split()[6]
-                #with open("data.json", "w") as f:
-                data["bandwidth"] = result.split()[5] + result.split()[6]
+                data["bandwidth"] = float(result.split()[5])
                 data["time"] = get_datetime()
-                #json_data = json.dumps(data)
-                #f.write(json_data)
         ltcstatus = os.popen(" ".join(latency_mur_cmd)).read()
         doc = open('clientbwlog.txt', 'a+')
         doc.write(get_datetime())
@@ -126,19 +112,12 @@ def BWmeasure(matches_num):
             machines = json.loads(f.read())
             data["machines"] = machines
         with open("data.json", "w") as f:
-            data["bandwidth"] = result.split()[5] + result.split()[6]
             data["time"] = get_datetime()
             json_data = json.dumps(data)
             f.write(json_data)
         doc.close()
-        
-        #status.seek(0)
-        
-
-
     except Exception as e:
         print(get_datetime(), "run_measure", e)
-
     finally:
         print("measure finish")
 
