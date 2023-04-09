@@ -52,7 +52,7 @@ def get_ssh(name):
 
 def BWmeasure(matches_num):
     try:
-        output =" "
+        output = " "
         get_bw("recv_%d" % (matches_num))
         sever_run_cmd = ["iperf3 -s -p %s -i 1 " % (sever_port)]
         print(" ".join(sever_run_cmd))
