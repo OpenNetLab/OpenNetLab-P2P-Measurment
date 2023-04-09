@@ -13,7 +13,6 @@ socket_timeout_sec = 240
 machines_file = "machines.json"
 sever_port = "8000"
 sever_ip = "20.81.187.38"
-recv_wd = "/home/wang/testnet/"
 
 sever_run_cmd = [
     "iperf3 -s -p %s -i 1 -1" % (
