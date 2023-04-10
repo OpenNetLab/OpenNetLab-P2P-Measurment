@@ -7,9 +7,9 @@ For different networks between multiple nodes in the OpenNetLab platform, we hop
 | Type     | Definition    |
 | -------- | -------- |
 | 1. Bandwidth | Iperf3 TCP mode & Iperf3 UDP mode (2x TCP result and see received throughout) |
-| 2. Network Latency | Iperf3 UDP mode(use Bandwidth in 1%,10% ,…, 100% Bandwidth) |
-| 3. Jitter | Iperf3 UDP mode(use Bandwidth in 1%,10% ,…, 100% Bandwidth) |
-| 4. Packet loss rate | Iperf3 UDP mode(use Bandwidth in 1%,10% ,…, 100% Bandwidth) |  
+| 2. Network Latency | Iperf3 UDP mode (use Bandwidth in 1%,10% ,…, 100% Bandwidth) |
+| 3. Jitter | Iperf3 UDP mode (use Bandwidth in 1%,10% ,…, 100% Bandwidth) |
+| 4. Packet loss rate | Iperf3 UDP mode (use Bandwidth in 1%,10% ,…, 100% Bandwidth) |  
 
 ## usage method  
 
