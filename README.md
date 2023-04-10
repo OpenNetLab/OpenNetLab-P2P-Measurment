@@ -11,7 +11,7 @@ For different networks between multiple nodes in the OpenNetLab platform, we hop
 | 3. Jitter | Iperf3 UDP mode (use Bandwidth in 1%,10% ,…, 100% Bandwidth) |
 | 4. Packet loss rate | Iperf3 UDP mode (use Bandwidth in 1%,10% ,…, 100% Bandwidth) |  
 
-## usage method  
+## Usage method  
 
 ### sever
 > docker run -v /home/wang/bwmeasure/bwmur:/app -w /app --net=host --name net_eval net-env:latest python3 /home/onl/bwmur/bwmursever.py
