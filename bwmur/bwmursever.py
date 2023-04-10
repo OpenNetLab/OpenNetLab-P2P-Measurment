@@ -12,7 +12,7 @@ import time
 socket_timeout_sec = 240
 machines_file = "machines.json"
 server_port = "8000"
-server_ip = "127.0.0.1"
+server_ip = "0.0.0.0"
 
 server_run_cmd = [
     "iperf3 -s -p %s -i 1 -1" % (
