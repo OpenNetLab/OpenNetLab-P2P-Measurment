@@ -9,21 +9,21 @@ import time
 
 socket_timeout_sec = 240
 machines_file = "machines.json"
-sever_port = "8000"
-sever_ip = "127.0.0.1"
-recv_wd = "/home"
+server_port = "8000"
+server_ip = "127.0.0.1"
 tcpbw = 0.0
+proportion = 11
 
-sever_run_cmd = [
+server_run_cmd = [
     "iperf3 -s -p %s -i 1 -1" % (
-        sever_port)]
+        server_port)]
 client_run_cmd = [
     "iperf3 -c %s -p %s" % (
-        sever_ip, sever_port)]
+        server_ip, server_port)]
         
 latency_mur_cmd = [
     "ping -c 4 %s" % (
-    sever_ip)]
+    server_ip)]
 
 def get_datetime():
     now = int(round(time.time() * 1000))
@@ -31,16 +31,16 @@ def get_datetime():
     return ret
     
 def get_bw(name):
-    global sever_ip
-    global sever_port
+    global server_ip
+    global server_port
     with open(machines_file, 'r') as f:
         machines = json.loads(f.read())
         if name not in machines:
             raise ValueError("Not find such mahcine")
-        sever_ip = machines[name]["host"]
-        sever_port = machines[name]["bw_port"]
+        server_ip = machines[name]["host"]
+        server_port = machines[name]["bw_port"]
         print(machines[name]["host"])
-        print(sever_ip)
+        print(server_ip)
                 
 def get_ssh(name):
     client = paramiko.SSHClient()
@@ -61,7 +61,7 @@ def BWmeasure(matches_num):
     try:
         output =" "
         get_bw("recv_%d" % (matches_num))
-        client_run_cmd = ["iperf3 -c %s -p %s -f M" % (sever_ip, sever_port)]
+        client_run_cmd = ["iperf3 -c %s -p %s -f M" % (server_ip, server_port)]
         print(" ".join(client_run_cmd))
         status = os.popen(" ".join(client_run_cmd)).read()
         cmd = client_run_cmd
@@ -93,14 +93,14 @@ def BWmeasure(matches_num):
         doc.write(" ".join(latency_mur_cmd))
         doc.write("\n")
         doc.write(ltcstatus)
-        for i in range(1,11):
+        for i in range(1,proportion):
             print(i)
-            print("iperf3 -u -c %s -b %s -p %s" %(sever_ip, str(round(tcpbw*i*0.1,2))+tcpstr[0], sever_port))
+            print("iperf3 -u -c %s -b %s -p %s" %(server_ip, str(round(tcpbw*i*0.1,2))+tcpstr[0], server_port))
             doc.write(get_datetime())
             doc.write("\n")
-            doc.write("iperf3 -u -c %s -b %s -p %s" %(sever_ip, str(round(tcpbw*i*0.1,2))+tcpstr[0], sever_port))
+            doc.write("iperf3 -u -c %s -b %s -p %s" %(server_ip, str(round(tcpbw*i*0.1,2))+tcpstr[0], server_port))
             doc.write("\n")
-            bw_status = os.popen("iperf3 -u -c %s -b %s -p %s" %(sever_ip, str(tcpbw*i*0.1)+tcpstr[0], sever_port)).read()
+            bw_status = os.popen("iperf3 -u -c %s -b %s -p %s" %(server_ip, str(tcpbw*i*0.1)+tcpstr[0], server_port)).read()
             doc.write(bw_status)
             bw_ss = bw_status.split()
             data[str(round(i*0.1,2)) + "_Jitter_Sender" ] = float(bw_ss[155])
