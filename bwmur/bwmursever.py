@@ -11,15 +11,15 @@ import time
 
 socket_timeout_sec = 240
 machines_file = "machines.json"
-sever_port = "8000"
-sever_ip = "20.81.187.38"
+server_port = "8000"
+server_ip = "127.0.0.1"
 
-sever_run_cmd = [
+server_run_cmd = [
     "iperf3 -s -p %s -i 1 -1" % (
-        sever_port)]
+        server_port)]
 client_run_cmd = [
     "iperf3 -c %s -p %s" % (
-        sever_ip, sever_port)]
+        server_ip, server_port)]
 
 def get_datetime():
     now = int(round(time.time() * 1000))
@@ -28,14 +28,14 @@ def get_datetime():
     
 
 def get_bw(name):
-    global sever_ip
-    global sever_port
+    global server_ip
+    global server_port
     with open(machines_file, 'r') as f:
         machines = json.loads(f.read())
         if name not in machines:
             raise ValueError("Not find such mahcine")
-        sever_ip = machines[name]["host"]
-        sever_port = machines[name]["bw_port"]
+        _ip = machines[name]["host"]
+        _port = machines[name]["bw_port"]
         
 def get_ssh(name):
     client = paramiko.SSHClient()
@@ -51,13 +51,13 @@ def get_ssh(name):
 
 def BWmeasure(matches_num):
     try:
-        output = " "
+        output =" "
         get_bw("recv_%d" % (matches_num))
-        sever_run_cmd = ["iperf3 -s -p %s -i 1 " % (sever_port)]
-        print(" ".join(sever_run_cmd))
-        status = os.popen(" ".join(sever_run_cmd)).read()
-        cmd = sever_run_cmd
-        doc = open('severbwlog.txt', 'a+')
+        _run_cmd = ["iperf3 -s -p %s -i 1 " % (_port)]
+        print(" ".join(_run_cmd))
+        status = os.popen(" ".join(_run_cmd)).read()
+        cmd = _run_cmd
+        doc = open('bwlog.txt', 'a+')
         doc.seek(0)
         doc.truncate()
         doc.write(status)
